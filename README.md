@@ -88,7 +88,7 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 # Functionality overview
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication.
+The example application is a social blogging site (i.e. a Medium.com clone) called "Feedbook". It uses a custom API for all requests, including authentication.
 
 **General functionality:**
 
