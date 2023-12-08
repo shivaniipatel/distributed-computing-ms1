@@ -1,31 +1,15 @@
-[![RealWorld Frontend](https://img.shields.io/badge/realworld-frontend-%23783578.svg)](http://realworld.io)
-[![Build Status](https://travis-ci.org/gothinkster/angular-realworld-example-app.svg?branch=master)](https://travis-ci.org/gothinkster/angular-realworld-example-app)
+# Overview
 
-# ![Angular Example App](logo.png)
-
-> ### Angular codebase containing real world examples (CRUD, auth, advanced patterns, etc) that adheres to the [RealWorld](https://github.com/gothinkster/realworld-example-apps) spec and API.
-
-<a href="https://stackblitz.com/edit/angular-realworld" target="_blank"><img width="187" src="https://github.com/gothinkster/realworld/blob/master/media/edit_on_blitz.png?raw=true" /></a>&nbsp;&nbsp;<a href="https://thinkster.io/tutorials/building-real-world-angular-2-apps" target="_blank"><img width="384" src="https://raw.githubusercontent.com/gothinkster/realworld/master/media/learn-btn-hr.png" /></a>
-
-### [Demo](https://angular.realworld.io)&nbsp;&nbsp;&nbsp;&nbsp;[RealWorld](https://github.com/gothinkster/realworld)
-
-This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more. We've gone to great lengths to adhere to the [Angular Styleguide](https://angular.io/styleguide) & best practices.
-
-Additionally, there is an Angular 1.5 version of this codebase that you can [fork](https://github.com/gothinkster/angularjs-realworld-example-app) and/or [learn how to recreate](https://thinkster.io/angularjs-es6-tutorial).
-
-# How it works
-
-We're currently working on some docs for the codebase (explaining where functionality is located, how it works, etc) but the codebase should be straightforward to follow as is. We've also released a [step-by-step tutorial w/ screencasts](https://thinkster.io/tutorials/building-real-world-angular-2-apps) that teaches you how to recreate the codebase from scratch.
+This codebase was created to demonstrate a fully fledged application built with Angular that interacts with an actual backend server including CRUD operations, authentication, routing, pagination, and more. 
 
 ### Making requests to the backend API
 
-For convenience, we have a live API server running at https://conduit.productionready.io/api for the application to make requests against. You can view [the API spec here](https://github.com/GoThinkster/productionready/blob/master/api) which contains all routes & responses for the server.
+For convenience, we are using a live API server running at https://conduit.productionready.io/api for the application to make requests against.
 
-The source code for the backend server (available for Node, Rails and Django) can be found in the [main RealWorld repo](https://github.com/gothinkster/realworld).
+If you want to change the API URL to a local server, simply edit `src/environments/environment.ts` and change `api_url` to the local server's URL (i.e. `localhost:3000/api`). Please note you will probably need to use a proxy in order to avoid Cross-Origin Resource (CORS) issues. 
 
-If you want to change the API URL to a local server, simply edit `src/environments/environment.ts` and change `api_url` to the local server's URL (i.e. `localhost:3000/api`). Please note you will probably need to use a proxy in order to avoid Cross-Origin Resource (CORS) issues. (more info: [Proxying to a backend server](https://angular.io/guide/build#proxying-to-a-backend-server) )
 
-# Getting started
+# Local Setup
 
 Make sure you have the [Angular CLI](https://github.com/angular/angular-cli#installation) installed globally. We use [Yarn](https://yarnpkg.com) to manage the dependencies, so we strongly recommend you to use it. you can install it from [Here](https://yarnpkg.com/en/docs/install), then run `yarn install` to resolve all dependencies (might take a minute).
 
@@ -35,9 +19,76 @@ Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app w
 
 Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
 
-## Functionality overview
+# Installation and Setup
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication. You can view a live demo over at https://angular.realworld.io
+1. AWS Setup:
+* Create an ECR Repository:
+* Create an ECR repository in AWS where you'll store your Docker images.
+
+* Set Up a Kubernetes Cluster:
+  * Set up a Kubernetes cluster on AWS. You can use Amazon EKS (Elastic Kubernetes Service) for this.
+
+2. Jenkins Setup:
+* Install Jenkins Plugins:
+  * Make sure Jenkins has the necessary plugins installed for AWS, Docker, and Kubernetes.
+
+* Configure AWS Credentials in Jenkins:
+  * In Jenkins, go to "Manage Jenkins" > "Manage Credentials."
+  * Add AWS credentials with the necessary permissions for ECR and Kubernetes.
+
+3. GitHub Setup:
+* Generate Jenkins API Token:
+  * In Jenkins, go to "Manage Jenkins" > "Manage Users" > select your user.
+  * Under "API Token," click "Add new Token" and generate a token.
+
+* Install GitHub Plugin in Jenkins:
+  * In Jenkins, go to "Manage Jenkins" > "Manage Plugins."
+  * Navigate to the "Available" tab, search for "GitHub Integration," and install the plugin.
+
+* Configure Jenkins Credentials:
+  * Go to "Manage Jenkins" > "Manage Credentials."
+  * Add a new secret text credential with your GitHub API token.
+
+4. Jenkins Job Configuration:
+* Create a Jenkins Job:
+  * Create a new Jenkins job (Freestyle project or Pipeline).
+
+* Configure GitHub Integration:
+  * In your Jenkins job configuration, find the "GitHub project" section.
+  * Enter the URL of your GitHub repository.
+
+* Set Up Source Code Management:
+  * Choose your version control system (e.g., Git).
+  * Enter the repository URL.
+
+* Set Up Build Triggers:
+  * Under "Build Triggers," check the option "GitHub hook trigger for GITScm polling."
+
+5. GitHub Webhook Configuration:
+* Go to Your GitHub Repository:
+  * Navigate to your GitHub repository.
+* Access Webhooks Settings:
+  * Go to "Settings" > "Webhooks" > "Add webhook."
+* Configure Webhook:
+  * Payload URL: http://your-jenkins-server/github-webhook/
+  * Content type: application/json
+  * Secret: Leave it empty (unless you want to add additional security with a shared secret).
+  * SSL verification: Enable it.
+  * Events: Select "Just the push event."
+* Add Webhook:
+  * Click "Add webhook" to save the configuration.
+
+## Test the Setup:
+* Push Code to Master:
+  * Make a change and push it to the master branch.
+* Check Jenkins:
+  * Go to Jenkins and navigate to your job.
+  * Check the "Build History" to see if a new build is triggered.
+
+
+# Functionality overview
+
+The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication.
 
 **General functionality:**
 
@@ -71,4 +122,3 @@ The example application is a social blogging site (i.e. a Medium.com clone) call
 
 <br />
 
-[![Brought to you by Thinkster](https://raw.githubusercontent.com/gothinkster/realworld/master/media/end.png)](https://thinkster.io)

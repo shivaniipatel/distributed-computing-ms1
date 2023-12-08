@@ -1,0 +1,36 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Build and Push Docker Image') {
+            steps {
+                script {
+                    sh 'docker build -t your-ecr-repo-url:latest .'
+
+                    // Using Amazon ECR plugin to get registry credentials
+                    withAWS(region: 'your-region', credentials: 'your-aws-credentials-id') {
+                        docker.withRegistry('https://your-ecr-repo-url', 'ecr:your-ecr-credentials-id') {
+                            sh 'docker push your-ecr-repo-url:latest'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage('Deploy to Kubernetes') {
+            steps {
+                script {
+                    // Deploy to Kubernetes using Terraform
+                    sh 'terraform init'
+                    sh 'terraform apply -auto-approve'
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful! Perform any additional post-deployment steps here.'
+        }
+    }
+}
