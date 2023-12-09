@@ -23,6 +23,10 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 
 1. AWS Setup:
 * Create an ECR Repository:
+```
+aws ecr create-repository --repository-name distributed-computing-ms1
+```
+
 * Create an ECR repository in AWS where you'll store your Docker images.
 
 * Set Up a Kubernetes Cluster:
@@ -35,11 +39,20 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 * Configure AWS Credentials in Jenkins:
   * In Jenkins, go to "Manage Jenkins" > "Manage Credentials."
   * Add AWS credentials with the necessary permissions for ECR and Kubernetes.
+    * You can use the Jenkins CLI or manually through the web interface.
+    ```
+    # Jenkins CLI (requires JENKINS_URL and JENKINS_SECRET)
+    java -jar jenkins-cli.jar -s JENKINS_URL -auth USERNAME:TOKEN create-credentials-by-xml system::system::jenkins _
+    ```
 
 3. GitHub Setup:
 * Generate Jenkins API Token:
   * In Jenkins, go to "Manage Jenkins" > "Manage Users" > select your user.
   * Under "API Token," click "Add new Token" and generate a token.
+  ```
+  # Jenkins CLI (requires JENKINS_URL and JENKINS_SECRET)
+  java -jar jenkins-cli.jar -s JENKINS_URL -auth USERNAME:TOKEN createUser USERNAME API_TOKEN
+  ```
 
 * Install GitHub Plugin in Jenkins:
   * In Jenkins, go to "Manage Jenkins" > "Manage Plugins."
@@ -48,6 +61,10 @@ Run `ng build` to build the project. The build artifacts will be stored in the `
 * Configure Jenkins Credentials:
   * Go to "Manage Jenkins" > "Manage Credentials."
   * Add a new secret text credential with your GitHub API token.
+    ```
+    # Jenkins CLI (requires JENKINS_URL and JENKINS_SECRET)
+    java -jar jenkins-cli.jar -s JENKINS_URL -auth USERNAME:TOKEN add-credentials-by-xml system::system::jenkins _
+    ```
 
 4. Jenkins Job Configuration:
 * Create a Jenkins Job:
