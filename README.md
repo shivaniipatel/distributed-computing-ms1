@@ -105,7 +105,7 @@ aws ecr create-repository --repository-name distributed-computing-ms1
 
 # Functionality overview
 
-The example application is a social blogging site (i.e. a Medium.com clone) called "Conduit". It uses a custom API for all requests, including authentication.
+The example application is a social blogging site (i.e. a Medium.com clone) called "Feedbook". It uses a custom API for all requests, including authentication.
 
 **General functionality:**
 
